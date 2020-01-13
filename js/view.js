@@ -1,12 +1,16 @@
 function View(data, controller) {
   this.controller = controller;
   this.data = data;
-
+  this.modal = document.getElementById("modal");
   const addButton = document.getElementById("addBtn");
+  const modalClose = document.getElementById("close-modal");
   addButton.onclick = e => {
     var textInput = document.getElementById("myInput");
     this.controller.addItem(textInput.value);
     textInput.value = "";
+  };
+  modalClose.onclick = e => {
+    modal.style.display = 'none';
   };
   this.render();
 }
@@ -43,5 +47,7 @@ View.prototype = {
       var elementoTarea = this.crearElementoTarea(tarea, index);
       document.getElementById("myUL").appendChild(elementoTarea);
     });
+    document.getElementById("cuantity").innerHTML = this.data.listaTareas.getAll().length;
+    this.modal.style.display = 'block';
   }
 };
