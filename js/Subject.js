@@ -20,6 +20,7 @@
 
     // notifica a los observers
     Subject.prototype.notify = function(data) {
+        console.log(this)
         if (this.observers.length > 0) {
             this.observers.forEach(observer => observer.update(data));
         }

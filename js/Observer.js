@@ -1,6 +1,6 @@
-var Observer = function(message) {
-    this.message = message;
+var Observer = function(callback) {
+    this.callback = callback;
 }
 Observer.prototype.update = function(data) {
-    console.log(this.message, data)
+    this.callback(data)
 }

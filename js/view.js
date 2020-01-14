@@ -1,18 +1,13 @@
-function View(data, controller) {
-  this.controller = controller;
-  this.data = data;
 
-  const addButton = document.getElementById("addBtn");
-  addButton.onclick = e => {
-    var textInput = document.getElementById("myInput");
-    this.controller.addItem(textInput.value);
-    textInput.value = "";
-  };
-  this.render();
+function updateList(listTareas) {
+  document.getElementById("myUL").innerHTML = "";
+  listTareas.getAll().forEach((tarea, index) => {
+    var elementoTarea = crearElementoTarea(tarea, index);
+    document.getElementById("myUL").appendChild(elementoTarea);
+  });
 }
 
-View.prototype = {
-  crearElementoTarea: function(tarea, index) {
+function crearElementoTarea(tarea, index) {
     var li = document.createElement("li");
 
     var textNode = document.createTextNode(tarea.tarea);
@@ -36,12 +31,46 @@ View.prototype = {
 
     li.appendChild(span);
     return li;
-  },
-  render: function() {
-    document.getElementById("myUL").innerHTML = "";
-    this.data.listaTareas.getAll().forEach((tarea, index) => {
-      var elementoTarea = this.crearElementoTarea(tarea, index);
-      document.getElementById("myUL").appendChild(elementoTarea);
-    });
-  }
+}
+
+function updateQuantity(listTareas) {
+  document.getElementById("cuantity").innerHTML = listTareas.getAll().length;
+}
+
+function showModal() {
+  document.getElementById("modal").style.display = 'block';
+}
+
+
+function View(data, controller) {
+  this.controller = controller;
+  this.data = data;
+  this.modal = document.getElementById("modal");
+  const addButton = document.getElementById("addBtn");
+  const modalClose = document.getElementById("close-modal");
+  
+  addButton.onclick = e => {
+    var textInput = document.getElementById("myInput");
+    this.controller.addItem(textInput.value);
+    textInput.value = "";
+  };
+  
+  modalClose.onclick = e => {
+    modal.style.display = 'none';
+  };
+  
+  this.onUpdateView = new Subject();
+
+  this.onUpdateView.addObserver(new Observer(updateList));
+  this.onUpdateView.addObserver(new Observer(updateQuantity));
+  this.onUpdateView.addObserver(new Observer(showModal));
+
+  this.render = this.onUpdateView.notify.bind(this.onUpdateView);
+}
+
+View.prototype = {
+  render: function() {}
 };
+
+
+
