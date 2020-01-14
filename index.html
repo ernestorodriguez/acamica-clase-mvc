@@ -27,12 +27,44 @@
         </div>
       </div>
     </div>
-    <script src="js/Observer.js"></script>
+    <script>
+      
+      function crearCookie(nombre, valor, expiracion) {
+        try {
+          var date  = new Date()
+          var expirationDate = (expiracion * 24 * 60 * 60 * 1000)
+          date.setTime(date.getTime() + expirationDate);
+          document.cookie = `${nombre}=${valor};expires=${date.toGMTString()}`;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      function obtenerCookie(nombre) {
+        try {
+          var cookieName = nombre + '=';
+          var cookies = document.cookie.split(';')
+          var result = cookies.find((cookie) => {
+            const temp = cookie.trim();
+            if(temp.indexOf(cookieName) === 0) {
+              return temp.substr(cookieName.length, temp.length)
+            }
+          })
+          return result
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      crearCookie('test', '12455', 10);
+      console.log(obtenerCookie('test'));
+    </script>
+    <!-- <script src="js/Observer.js"></script>
     <script src="js/Subject.js"></script>
     <script src="js/model.js"></script>
     <script src="js/view.js"></script>
     <script src="js/controller.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/jquery-3.3.1.js"></script> -->
   </body>
 </html>
