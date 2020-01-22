@@ -26,7 +26,6 @@ var View = (function(){
         this.controller.addTask(value);
         $input.val('');
         $modal.fadeIn(300);
-        $quantity.text( $list.children().length);
       }
     },
     closeModalHandler() {
@@ -37,6 +36,7 @@ var View = (function(){
       taskList.forEach(task => {
         this.createElement(task);
       });
+      $quantity.text($list.children().length);
     },
     createElement(tarea) {
       $list.append(`<li>${tarea}</li>`);
